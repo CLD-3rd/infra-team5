@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: sans-serif;
-    font-size: 20px;
+    font-size: 15px;
     background-color: #FFF5CC;
     padding-top: 90px;
 }
@@ -32,6 +32,7 @@ body {
 }
 
 .nav-links a {
+    font-size: 20px;
     margin-right: 30px;
     text-decoration: none;
     font-weight: 600;
