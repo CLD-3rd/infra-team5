@@ -22,7 +22,7 @@ public class SurveyDto {
     public static SurveyDto fromEntity(Survey survey) {
         return SurveyDto.builder()
                 .id(survey.getId())
-                .title(survey.getTiitle())
+                .title(survey.getTitle())
                 .isClosed(survey.isClosed())
                 .submissionCount(survey.getSubmissionCount())
                 .build();

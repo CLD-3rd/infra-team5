@@ -1,10 +1,8 @@
 package com.team5.surbee.controller;
 
-import com.team5.surbee.dto.SessionUser;
 import com.team5.surbee.dto.response.SurveyMainResponse;
 import com.team5.surbee.service.SurveyService;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
