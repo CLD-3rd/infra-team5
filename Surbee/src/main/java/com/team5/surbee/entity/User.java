@@ -2,37 +2,57 @@ package com.team5.surbee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
+import java.time.LocalDateTime;
+import java.util.List;
+
+@ToString
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "user")
 public class User {
 
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 16, nullable = false)
+    @Column(nullable = false, length = 16)
     private String username;
 
-    @Column(length = 255, nullable = false, unique = true)
+    @Setter
+    @Column(nullable = true, length = 255)
     private String email;
 
-//    @Column(length = 100)
-//    private String password; // 소셜 로그인 사용자도 대비해서 nullable
+    @Column(nullable = false, length = 10)
+    private String provider;
 
-    @Column(length = 20, nullable = false)
-    private String provider; // ex. google, kakao
-
-    @Column(length = 255, nullable = false)
+    @Column(name = "provider_id", nullable = false, length = 64)
     private String providerId; // 소셜 사용자 고유 식별자
 
-    @Column(nullable = false)
-    private String createdAt;
+    @CreatedDate
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    // 예: @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<Survey> surveys;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Survey> surveys;
+
+    private User(String username, String email, String provider, String providerId) {
+        this.username = username;
+        this.email = email;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
+
+    public static User of(String username, String email, String provider, String providerId) {
+        return new User(username, email, provider, providerId);
+    }
+
+    public static User of(String username, String provider, String providerId) {
+        return new User(username, null, provider, providerId);
+    }
 }

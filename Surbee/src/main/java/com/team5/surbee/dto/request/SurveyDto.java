@@ -1,12 +1,7 @@
 package com.team5.surbee.dto.request;
 
 import com.team5.surbee.entity.Survey;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -22,7 +17,7 @@ public class SurveyDto {
     public static SurveyDto fromEntity(Survey survey) {
         return SurveyDto.builder()
                 .id(survey.getId())
-                .title(survey.getTiitle())
+                .title(survey.getTitle())
                 .isClosed(survey.isClosed())
                 .submissionCount(survey.getSubmissionCount())
                 .build();
