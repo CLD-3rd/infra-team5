@@ -10,8 +10,6 @@ import com.team5.surbee.entity.Option;
 import com.team5.surbee.entity.Question;
 import com.team5.surbee.entity.Survey;
 import com.team5.surbee.entity.User;
-import com.team5.surbee.repository.OptionRepository;
-import com.team5.surbee.repository.QuestionRepository;
 import com.team5.surbee.repository.SurveyRepository;
 import com.team5.surbee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +26,8 @@ public class SurveyService {
     // Question, Option은 여기서 처리
     private final SurveyRepository surveyRepository;
     private final UserRepository userRepository;
-    private final QuestionRepository questionRepository;
-    private final OptionRepository optionRepository;
 
+    @Transactional(readOnly = true)
     public SurveyMainResponse getMainSurveyList() {
         List<SurveyDto> active = surveyRepository.findTop10ByIsClosedFalseOrderByCreatedAtDesc()
                 .stream().map(SurveyDto::from).toList();
@@ -50,10 +47,7 @@ public class SurveyService {
 
     @Transactional
     public void createSurvey(SurveyDto surveyDto) {
-        // 1. 유저 조회
-        User user = userRepository.findById(surveyDto.user().id())
-                .orElseThrow(() -> new UserExcpetion(ErrorCode.USER_NOT_FOUND));
-
+        User user = getUserOrThrow(surveyDto.user().id());
         // 2. 질문 + 옵션 엔티티 생성
         List<Question> questionEntities = surveyDto.questions().stream()
                 .map(questionDto -> {
@@ -86,9 +80,31 @@ public class SurveyService {
 
     @Transactional(readOnly = true)
     public SurveyVoteResponse getSurveyVote(Integer id) {
-        Survey survey = surveyRepository.findById(id)
-                .orElseThrow(() -> new SurveyException(ErrorCode.SURVEY_NOT_FOUND));
+        Survey survey = getSurveyOrThrow(id);
 
         return SurveyVoteResponse.from(survey);
+    }
+
+    @Transactional
+    public void deleteSurvey(Integer surveyId, Integer userId) {
+        getUserOrThrow(userId);
+
+        Survey survey = getSurveyOrThrow(surveyId);
+
+        if (!survey.getUser().getId().equals(userId)) {
+            throw new SurveyException(ErrorCode.SURVEY_DELETE_FORBIDDEN);
+        }
+
+        surveyRepository.delete(survey);
+    }
+
+    private User getUserOrThrow(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserExcpetion(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Survey getSurveyOrThrow(Integer surveyId) {
+        return surveyRepository.findById(surveyId)
+                .orElseThrow(() -> new SurveyException(ErrorCode.SURVEY_NOT_FOUND));
     }
 }

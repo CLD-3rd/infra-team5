@@ -37,4 +37,11 @@ public class SurveyController {
         model.addAttribute("survey", response);
         return "survey/create"; // 이후 설문 응답 페이지로 수정
     }
+
+    @DeleteMapping("/{surveyId}")
+    public String deleteSurvey(@PathVariable Integer surveyId, HttpSession session) {
+        SessionUserDto user = (SessionUserDto) session.getAttribute("user");
+        surveyService.deleteSurvey(surveyId, user.id());
+        return "redirect:/"; // 이후 마이 페이지로 수정
+    }
 }
