@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Surbee - 설문조사 사이트</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #fff8dc;
+        }
+
+		.header {
+		    background-color: #ffcc00;
+		    padding: 10px 20px;
+		}
+		
+		.header-container {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		}
+		
+		.logo-link {
+		    display: flex;
+		    align-items: center;
+		    text-decoration: none;
+		    color: black;
+		    font-weight: bold;
+		}
+		
+		.logo-image {
+		    height: 40px;
+		    margin-right: 8px;
+		}
+		
+		.nav-links {
+		    display: flex;
+		    gap: 20px;
+		}
+		
+		.nav-link {
+		    text-decoration: none;
+		    color: black;
+		    font-weight: bold;
+		}
+        .main-content {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .site-description {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .survey-section {
+            margin-bottom: 20px;
+        }
+
+        .survey-header {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .survey-title {
+            margin: 0;
+            margin-right: 20px;
+        }
+
+        .survey-tabs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .survey-tab {
+            background-color: #ffcc00;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .survey-tab.active {
+            background-color: #e6b800;
+        }
+
+        .survey-grid {
+            display: flex;
+            gap: 20px;
+        }
+
+        .survey-box {
+            background-color: #ffcc00;
+            padding: 20px;
+            border-radius: 5px;
+            flex: 1;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .survey-list {
+            margin-top: 10px;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .survey-list li {
+            margin-bottom: 8px;
+        }
+
+        .survey-list a {
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .footer a {
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <div th:replace="~{header :: header}"></div>
+
+    <div class="main-content">
+        <div class="site-description">
+            <h2>설문으로 세상과 소통하세요! ✨</h2>
+            <p>누구나 쉽게 설문을 만들고, 참여하고, 결과를 확인할 수 있습니다.</p>
+        </div>
+
+        <div class="survey-section">
+            <div class="survey-header">
+                <h3 class="survey-title">공개 설문</h3>
+                <div class="survey-tabs">
+                    <button class="survey-tab active" onclick="showTab('open')">진행중인 설문</button>
+                    <button class="survey-tab" onclick="showTab('closed')">종료된 설문</button>
+                </div>
+            </div>
+
+            <div class="survey-grid" id="open-surveys">
+                <!-- 최신순 -->
+                <div class="survey-box">
+                    <h3>진행중인 설문 (최신순)</h3>
+                    <ul class="survey-list">
+                        <li th:each="survey : ${surveys.activeSurveys}">
+                            <a th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                            <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 인기순 -->
+                <div class="survey-box">
+                    <h3>인기 설문 (답변 많은 순)</h3>
+                    <ul class="survey-list">
+                        <li th:each="survey : ${surveys.popularSurveys}">
+                            <a th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                            <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="survey-grid hidden" id="closed-surveys">
+                <div class="survey-box" style="flex: 1 1 100%;">
+                    <h3>종료된 설문</h3>
+                    <ul class="survey-list">
+                        <li th:each="survey : ${surveys.closedSurveys}">
+                            <a th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                            <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <div th:replace="~{footer :: footer}"></div>
+
+    <script>
+        function showTab(tab) {
+            const openTab = document.getElementById('open-surveys');
+            const closedTab = document.getElementById('closed-surveys');
+            const tabs = document.querySelectorAll('.survey-tab');
+
+            if (tab === 'open') {
+                openTab.classList.remove('hidden');
+                closedTab.classList.add('hidden');
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                openTab.classList.add('hidden');
+                closedTab.classList.remove('hidden');
+                tabs[0].classList.remove('active');
+                tabs[1].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
