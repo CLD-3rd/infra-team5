@@ -1,0 +1,47 @@
+/* 기존 스타일 유지 */
+body {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 20px;
+    background-color: #FFF5CC;
+    padding-top: 90px;
+}
+
+.login-container {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.login-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    min-width: 200px;
+}
+
+.google-login {
+    background-color: #4285F4;
+}
+
+.kakao-login {
+    background-color: #FEE500;
+    color: #000000;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+    .login-button {
+        width: 80%;
+        font-size: 14px;
+    }
+}
