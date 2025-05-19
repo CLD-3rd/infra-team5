@@ -1,6 +1,6 @@
 package com.team5.surbee.service;
 
-import com.team5.surbee.dto.SessionUser;
+import com.team5.surbee.dto.SessionUserDto;
 import com.team5.surbee.entity.User;
 import com.team5.surbee.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,7 +60,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Integer id = saveOrUpdateAndReturnId(email, username, provider, providerId);
 
         HttpSession session = this.request.getSession();
-        session.setAttribute("user", SessionUser.of(username, email, id));
+        session.setAttribute("user", SessionUserDto.of(username, email, id));
 
         return oauth2User;
     }

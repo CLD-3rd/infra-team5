@@ -1,25 +1,15 @@
 package com.team5.surbee.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public record SessionUserDto(
+        String username,
+        String email,
+        Integer id) {
 
-@Getter
-@NoArgsConstructor
-public class SessionUser {
-    private String username;
-    private String email;
-    private int id;
-    public SessionUser(String username, String email, int id) {
-        this.username = username;
-        this.email = email;
-        this.id = id;
+    public static SessionUserDto of(String username, String email, Integer id) {
+        return new SessionUserDto(username, email, id);
     }
-    public static SessionUser of(String username,String email, int id) {
-        return new SessionUser(username,email,id);
-    }
-    public static SessionUser of(String username,int id){
-        return new SessionUser(username,null,id);
+
+    public static SessionUserDto of(String username, Integer id) {
+        return new SessionUserDto(username, null, id);
     }
 }
