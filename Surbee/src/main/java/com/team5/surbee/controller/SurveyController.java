@@ -1,17 +1,15 @@
 package com.team5.surbee.controller;
 
-import ch.qos.logback.core.model.Model;
 import com.team5.surbee.dto.SessionUserDto;
 import com.team5.surbee.dto.request.SurveyCreateRequest;
+import com.team5.surbee.dto.response.SurveyVoteResponse;
 import com.team5.surbee.service.SurveyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -33,4 +31,10 @@ public class SurveyController {
         return "redirect:/";
     }
 
+    @GetMapping("/{surveyId}")
+    public String getSurveyVote(@PathVariable Integer surveyId, Model model) {
+        SurveyVoteResponse response = surveyService.getSurveyVote(surveyId);
+        model.addAttribute("survey", response);
+        return "survey/create"; // 이후 설문 응답 페이지로 수정
+    }
 }

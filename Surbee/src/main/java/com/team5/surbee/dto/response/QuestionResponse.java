@@ -1,12 +1,27 @@
 package com.team5.surbee.dto.response;
 
+import com.team5.surbee.entity.Option;
+import com.team5.surbee.entity.Question;
+import com.team5.surbee.entity.constant.QuestionType;
+
 import java.util.List;
 
 public record QuestionResponse(
-        Integer questionId,
+        Integer id,
         String questionText,
-        String questionType,
+        QuestionType questionType,
         boolean isRequired,
-        List<String> options // SHORT/LONG 타입이면 null or 빈 리스트
+        List<String> options
 ) {
+    public static QuestionResponse from(Question question) {
+        return new QuestionResponse(
+                question.getId(),
+                question.getQuestionText(),
+                question.getQuestionType(),
+                question.getIsRequired(),
+                question.getOptions().stream()
+                        .map(Option::getOptionText)
+                        .toList()
+        );
+    }
 }

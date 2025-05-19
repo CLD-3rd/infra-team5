@@ -1,9 +1,11 @@
 package com.team5.surbee.service;
 
 import com.team5.surbee.common.exception.ErrorCode;
+import com.team5.surbee.common.exception.SurveyException;
 import com.team5.surbee.common.exception.UserExcpetion;
 import com.team5.surbee.dto.SurveyDto;
 import com.team5.surbee.dto.response.SurveyMainResponse;
+import com.team5.surbee.dto.response.SurveyVoteResponse;
 import com.team5.surbee.entity.Option;
 import com.team5.surbee.entity.Question;
 import com.team5.surbee.entity.Survey;
@@ -80,5 +82,13 @@ public class SurveyService {
 
         // 4. 저장
         surveyRepository.save(survey);
+    }
+
+    @Transactional(readOnly = true)
+    public SurveyVoteResponse getSurveyVote(Integer id) {
+        Survey survey = surveyRepository.findById(id)
+                .orElseThrow(() -> new SurveyException(ErrorCode.SURVEY_NOT_FOUND));
+
+        return SurveyVoteResponse.from(survey);
     }
 }
