@@ -16,7 +16,8 @@
             <a href="/login-social" class="nav-link">로그인</a>
         </div>
         <div class="nav-links" th:if="${session.user != null}">
-            <a href="/mypage" class="nav-link">마이페이지</a>
+            <span class="nav-username">[[${session.user.username}]]</span>
+            <a th:if="${requestURI != '/user/mypage'}" href="/user/mypage" class="nav-link">마이페이지</a>
             <a href="/logout" class="nav-link">로그아웃</a>
         </div>
     </div>
