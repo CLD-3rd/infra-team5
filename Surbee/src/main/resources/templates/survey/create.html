@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>설문 생성 : Surbee</title>
+    <link rel="stylesheet" th:href="@{/css/survey-create.css}" />
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="survey-container">
+        <form class="survey-form" th:action="@{/surveys/create}" th:method="post" th:object="${survey}">
+            <!-- 설문지 제목/설명 -->
+            <div class="empty-section"></div>
+            <div class="survey-header">
+                <div class="title-section">
+                    <input type="text" class="survey-title" name="title" placeholder="설문지 제목">
+                    <textarea class="survey-description" name="description"
+                              placeholder="설문지 설명" rows="2"></textarea>
+                </div>
+                <div class="privacy-section">
+                    <div class="privacy-options">
+                        <label class="radio-label">
+                            <input type="radio" name="privacy" value="PUBLIC" checked>
+                            <span>공개</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="privacy" value="PRIVATE">
+                            <span>비공개</span>
+                        </label>
+                    </div>
+                    <div class="password-input">
+                        <label for="password">비밀번호</label>
+                        <input type="password" disabled id="password" name="password">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 질문 목록 -->
+            <div class="questions-container" id="questions-container">
+                <div class="question-box">
+                    <div class="question-header">
+                        <input type="text" class="question-text" name="questions[0].questionText" placeholder="질문">
+                        <div class="question-type">
+                            <select class="form-select" name="questions[0].type">
+                                <option value="MULTIPLE_CHOICE" selected>객관식</option>
+                                <option value="CHECKBOX">체크박스</option>
+                                <option value="SHORT_ANSWER">단답형</option>
+                                <option value="LONG_ANSWER">장문형</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="type-description">다중 선택 X</div>
+                    <div class="options-container" id="options-container-0">
+                        <div class="option">
+                            <label class="radio-label">
+                                <input type="radio" disabled>
+                                <input type="text" class="text-input"
+                                       name="questions[0].options[0].optionText" value="옵션 1">
+                            </label>
+                            <button class="delete-btn hidden" type="button">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div class="option add-option" id="add-option-btn">
+                            <label class="radio-label">
+                                <input type="radio" disabled>
+                                <span>옵션 추가</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="question-footer">
+                        <button class="ai-btn" type="button">AI 응답 생성</button>
+                        <div class="required-toggle">
+                            <span>필수</span>
+                            <label class="switch">
+                                <input type="checkbox" name="questions[0].isRequired">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 질문 추가 및 저장 버튼 -->
+            <div class="form-actions">
+                <button type="button" class="delete-question-btn hidden">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="add-question-btn">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <button type="submit" class="save-btn">저장</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Font Awesome 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script type="module" th:src="@{/js/survey-create.js}"></script>
+</section>
+</body>
+</html>
