@@ -2,6 +2,7 @@ package com.team5.surbee.controller;
 
 import com.team5.surbee.dto.SessionUserDto;
 import com.team5.surbee.dto.request.SurveyCreateRequest;
+import com.team5.surbee.dto.response.SurveyMyResponse;
 import com.team5.surbee.dto.response.SurveyVoteResponse;
 import com.team5.surbee.service.SurveyService;
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -42,6 +45,14 @@ public class SurveyController {
     public String deleteSurvey(@PathVariable Integer surveyId, HttpSession session) {
         SessionUserDto user = (SessionUserDto) session.getAttribute("user");
         surveyService.deleteSurvey(surveyId, user.id());
+        return "redirect:/"; // 이후 마이 페이지로 수정
+    }
+
+    @GetMapping("/my")
+    public String getMySurveys(HttpSession session, Model model) {
+        SessionUserDto user = (SessionUserDto) session.getAttribute("user");
+        List<SurveyMyResponse> responses = surveyService.getSurveysByUser(user.id());
+        model.addAttribute("surveys", responses);
         return "redirect:/"; // 이후 마이 페이지로 수정
     }
 }

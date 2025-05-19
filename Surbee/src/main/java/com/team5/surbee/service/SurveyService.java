@@ -5,6 +5,7 @@ import com.team5.surbee.common.exception.SurveyException;
 import com.team5.surbee.common.exception.UserExcpetion;
 import com.team5.surbee.dto.SurveyDto;
 import com.team5.surbee.dto.response.SurveyMainResponse;
+import com.team5.surbee.dto.response.SurveyMyResponse;
 import com.team5.surbee.dto.response.SurveyVoteResponse;
 import com.team5.surbee.entity.Option;
 import com.team5.surbee.entity.Question;
@@ -96,6 +97,17 @@ public class SurveyService {
         }
 
         surveyRepository.delete(survey);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SurveyMyResponse> getSurveysByUser(Integer userId) {
+        User user = getUserOrThrow(userId);
+
+        List<Survey> surveys = surveyRepository.findByUser(user);
+        
+        return surveys.stream()
+                .map(SurveyMyResponse::from)
+                .toList();
     }
 
     private User getUserOrThrow(Integer userId) {
