@@ -1,14 +1,9 @@
 package com.team5.surbee.dto.response;
 
+import com.team5.surbee.dto.SurveyDto;
+import lombok.*;
+
 import java.util.List;
-
-import com.team5.surbee.dto.request.SurveyDto;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Setter

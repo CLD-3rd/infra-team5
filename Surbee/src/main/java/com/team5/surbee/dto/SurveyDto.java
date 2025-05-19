@@ -6,7 +6,6 @@ import com.team5.surbee.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record SurveyDto(
         Integer id,
@@ -17,7 +16,7 @@ public record SurveyDto(
         String password,
         Integer submissionCount,
         LocalDateTime createdAt,
-        UserDto user,
+        SessionUserDto user,
         List<QuestionDto> questions
 ) {
     public static SurveyDto from(Survey survey) {
@@ -30,12 +29,12 @@ public record SurveyDto(
                 survey.getPassword(),
                 survey.getSubmissionCount(),
                 survey.getCreatedAt(),
-                UserDto.from(survey.getUser()),
-                survey.getQuestions().stream().map(QuestionDto::from).collect(Collectors.toList())
+                SessionUserDto.from(survey.getUser()),
+                survey.getQuestions().stream().map(QuestionDto::from).toList()
         );
     }
 
     public Survey toEntity(User user, List<Question> questionEntities) {
-        return Survey.of(title, description, isPublic, isClosed, password, submissionCount, user, questionEntities, List.of());
+        return Survey.of(title, description, isPublic, password, user, questionEntities);
     }
 }
