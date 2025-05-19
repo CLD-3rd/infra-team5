@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}" />
+</head>
+<body>
+<section layout:fragment="content" class="login-container">
+    <div>
+        <p class="login-info">처음 이용하신다면 자동으로 회원가입이 진행됩니다.</p>
+        <a href="/oauth2/authorization/google" class="login-button google-login">Google 로그인</a>
+        <br>
+        <a href="/oauth2/authorization/kakao" class="login-button kakao-login">Kakao 로그인</a>
+    </div>
+</section>
+</body>
+</html>
