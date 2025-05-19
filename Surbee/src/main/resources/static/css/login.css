@@ -1,11 +1,16 @@
 .login-container {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 300px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 2rem;
+}
+
+.login-logo-image {
+    height: 100px;
+    margin-bottom: 20px;
 }
 
 .login-button {
