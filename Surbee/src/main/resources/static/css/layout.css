@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: sans-serif;
-    font-size: 20px;
+    font-size: 15px;
     background-color: #FFF5CC;
     padding-top: 90px;
 }
@@ -12,6 +12,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
+    z-index: 1000;
 }
 
 .header-container {
@@ -32,6 +33,7 @@ body {
 }
 
 .nav-links a {
+    font-size: 20px;
     margin-right: 30px;
     text-decoration: none;
     font-weight: 600;
