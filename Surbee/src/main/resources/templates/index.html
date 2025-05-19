@@ -11,40 +11,41 @@
             background-color: #fff8dc;
         }
 
-		.header {
-		    background-color: #ffcc00;
-		    padding: 10px 20px;
-		}
-		
-		.header-container {
-		    display: flex;
-		    justify-content: space-between;
-		    align-items: center;
-		}
-		
-		.logo-link {
-		    display: flex;
-		    align-items: center;
-		    text-decoration: none;
-		    color: black;
-		    font-weight: bold;
-		}
-		
-		.logo-image {
-		    height: 40px;
-		    margin-right: 8px;
-		}
-		
-		.nav-links {
-		    display: flex;
-		    gap: 20px;
-		}
-		
-		.nav-link {
-		    text-decoration: none;
-		    color: black;
-		    font-weight: bold;
-		}
+        .header {
+            background-color: #ffcc00;
+            padding: 10px 20px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .logo-image {
+            height: 40px;
+            margin-right: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
         .main-content {
             max-width: 1000px;
             margin: 20px auto;
@@ -138,82 +139,83 @@
     </style>
 </head>
 <body>
-    <!-- 헤더 -->
-    <div th:replace="~{header :: header}"></div>
-    <div class="main-content">
-        <div class="site-description">
-            <h2>설문으로 세상과 소통하세요! ✨</h2>
-            <p>누구나 쉽게 설문을 만들고, 참여하고, 결과를 확인할 수 있습니다.</p>
+<!-- 헤더 -->
+<div th:replace="~{layout/header :: header}"></div>
+
+<div class="main-content">
+    <div class="site-description">
+        <h2>설문으로 세상과 소통하세요! ✨</h2>
+        <p>누구나 쉽게 설문을 만들고, 참여하고, 결과를 확인할 수 있습니다.</p>
+    </div>
+
+    <div class="survey-section">
+        <div class="survey-header">
+            <h3 class="survey-title">공개 설문</h3>
+            <div class="survey-tabs">
+                <button class="survey-tab active" onclick="showTab('open')">진행중인 설문</button>
+                <button class="survey-tab" onclick="showTab('closed')">종료된 설문</button>
+            </div>
         </div>
 
-        <div class="survey-section">
-            <div class="survey-header">
-                <h3 class="survey-title">공개 설문</h3>
-                <div class="survey-tabs">
-                    <button class="survey-tab active" onclick="showTab('open')">진행중인 설문</button>
-                    <button class="survey-tab" onclick="showTab('closed')">종료된 설문</button>
-                </div>
+        <div class="survey-grid" id="open-surveys">
+            <div class="survey-box">
+                <h3>진행중인 설문 (최신순)</h3>
+                <ul class="survey-list">
+                    <li th:each="survey : ${surveys.activeSurveys}">
+                        <a th:if="${!survey.closed}" th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:if="${survey.closed}" th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
+                    </li>
+                </ul>
             </div>
 
-            <div class="survey-grid" id="open-surveys">
-                <!-- 최신순 -->
-                <div class="survey-box">
-                    <h3>진행중인 설문 (최신순)</h3>
-                    <ul class="survey-list">
-                        <li th:each="survey : ${surveys.activeSurveys}">
-                            <a th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                            <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- 인기순 -->
-                <div class="survey-box">
-                    <h3>인기 설문 (답변 많은 순)</h3>
-                    <ul class="survey-list">
-                        <li th:each="survey : ${surveys.popularSurveys}">
-                            <a th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                            <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
-                        </li>
-                    </ul>
-                </div>
+            <div class="survey-box">
+                <h3>인기 설문 (답변 많은 순)</h3>
+                <ul class="survey-list">
+                    <li th:each="survey : ${surveys.popularSurveys}">
+                        <a th:if="${!survey.closed}" th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:if="${survey.closed}" th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
+                    </li>
+                </ul>
             </div>
+        </div>
 
-            <div class="survey-grid hidden" id="closed-surveys">
-                <div class="survey-box" style="flex: 1 1 100%;">
-                    <h3>종료된 설문</h3>
-                    <ul class="survey-list">
-                        <li th:each="survey : ${surveys.closedSurveys}">
-                            <a th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                            <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
-                        </li>
-                    </ul>
-                </div>
+        <div class="survey-grid hidden" id="closed-surveys">
+            <div class="survey-box" style="flex: 1 1 100%;">
+                <h3>종료된 설문</h3>
+                <ul class="survey-list">
+                    <li th:each="survey : ${surveys.closedSurveys}">
+                        <a th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- 푸터 -->
-    <div th:replace="~{footer :: footer}"></div>
+<!-- 푸터 -->
+<div th:replace="~{layout/footer :: footer}"></div>
 
-    <script>
-        function showTab(tab) {
-            const openTab = document.getElementById('open-surveys');
-            const closedTab = document.getElementById('closed-surveys');
-            const tabs = document.querySelectorAll('.survey-tab');
+<script>
+    function showTab(tab) {
+        const openTab = document.getElementById('open-surveys');
+        const closedTab = document.getElementById('closed-surveys');
+        const tabs = document.querySelectorAll('.survey-tab');
 
-            if (tab === 'open') {
-                openTab.classList.remove('hidden');
-                closedTab.classList.add('hidden');
-                tabs[0].classList.add('active');
-                tabs[1].classList.remove('active');
-            } else {
-                openTab.classList.add('hidden');
-                closedTab.classList.remove('hidden');
-                tabs[0].classList.remove('active');
-                tabs[1].classList.add('active');
-            }
+        if (tab === 'open') {
+            openTab.classList.remove('hidden');
+            closedTab.classList.add('hidden');
+            tabs[0].classList.add('active');
+            tabs[1].classList.remove('active');
+        } else {
+            openTab.classList.add('hidden');
+            closedTab.classList.remove('hidden');
+            tabs[0].classList.remove('active');
+            tabs[1].classList.add('active');
         }
-    </script>
+    }
+</script>
 </body>
 </html>
