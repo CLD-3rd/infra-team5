@@ -23,7 +23,6 @@ public class UserController {
 
     @GetMapping("/fail-login")
     public String failLogin(){
-        System.out.println("로그인 실패!");
         return "error/error";
     }
 }
