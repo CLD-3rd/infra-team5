@@ -1,0 +1,66 @@
+services:
+  db:
+    container_name: mysql-server
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    volumes:
+      - /home/ubuntu/surbee/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: surbee
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - app-network
+    healthcheck:
+      test: ['CMD-SHELL', 'mysqladmin ping -h 127.0.0.1 -u root --password=$$MYSQL_ROOT_PASSWORD']
+      interval: 10s
+      timeout: 2s
+      retries: 100
+
+  backend:
+    container_name: backend-server
+    build:
+      context: . #빌드를 수행할 디렉토리
+      dockerfile: ./Dockerfile #도커파일로 이미지를 빌드하겠다.
+    ports:
+      - 8080:8080
+    environment:
+      MYSQL_HOST: db  # 환경변수를 외부로부터 주입받음.
+    depends_on: # db 실행 확인
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app-network
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter
+    environment:
+      DATA_SOURCE_NAME: root:${DB_ROOT_PASSWORD}@(db:3306)/
+    ports:
+      - "9104:9104"
+    networks:
+      - app-network
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

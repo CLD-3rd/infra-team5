@@ -1,0 +1,12 @@
+global:
+  scrape_interval: 15s  # 메트릭을 15초마다 수집
+
+scrape_configs:
+  - job_name: 'springboot-app'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['backend-server:8080']  # 컨테이너 이름을 사용할 수 있음
+
+  - job_name: 'mysql'
+    static_configs:
+    - targets: ['mysqld-exporter:9104']

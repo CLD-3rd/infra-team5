@@ -288,3 +288,4 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/java,windows,macos,eclipse,intellij,maven
 
 application-private.properties
+.env
