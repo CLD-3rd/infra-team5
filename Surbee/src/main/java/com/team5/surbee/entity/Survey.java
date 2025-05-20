@@ -49,12 +49,15 @@ public class Survey {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
     private User user;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Question> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Submission> submissions = new ArrayList<>();
 
     private Survey(String title, String description, boolean isPublic, boolean isClosed, String password, Integer submissionCount, User user, List<Question> questions, List<Submission> submissions) {
@@ -69,8 +72,8 @@ public class Survey {
         this.submissions = submissions;
     }
 
-    public static Survey of(String title, String description, boolean isPublic, boolean isClosed, String password, Integer submissionCount, User user, List<Question> questions, List<Submission> submissions) {
-        return new Survey(title, description, isPublic, isClosed, password, submissionCount, user, questions, submissions);
+    public static Survey of(String title, String description, boolean isPublic, String password, User user, List<Question> questions) {
+        return new Survey(title, description, isPublic, false, password, 0, user, questions, new ArrayList<>());
     }
 
 

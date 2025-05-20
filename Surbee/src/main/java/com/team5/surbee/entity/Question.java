@@ -33,9 +33,11 @@ public class Question {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id", nullable = false)
+    @ToString.Exclude
     private Survey survey;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<Option> options = new ArrayList<>();
 
     private Question(String questionText, QuestionType questionType, Boolean isRequired, Survey survey, List<Option> options) {
@@ -48,5 +50,9 @@ public class Question {
 
     public static Question of(String questionText, QuestionType questionType, Boolean isRequired, Survey survey, List<Option> options) {
         return new Question(questionText, questionType, isRequired, survey, options);
+    }
+
+    public void assignToSurvey(Survey survey) {
+        this.survey = survey;
     }
 }

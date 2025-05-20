@@ -22,6 +22,7 @@ public class Option {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
+    @ToString.Exclude
     private Question question;
 
     private Option(String optionText, Question question) {
@@ -31,5 +32,10 @@ public class Option {
 
     public static Option of(String optionText, Question question) {
         return new Option(optionText, question);
+    }
+
+    // 설문 생성 시, 역참조 캡슐화
+    public void assignToQuestion(Question question) {
+        this.question = question;
     }
 }
