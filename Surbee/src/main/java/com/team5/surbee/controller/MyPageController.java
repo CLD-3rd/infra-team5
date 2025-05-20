@@ -6,6 +6,7 @@ import com.team5.surbee.dto.response.survey.SurveySummaryResponse;
 import com.team5.surbee.entity.User;
 import com.team5.surbee.service.SurveyService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -30,11 +31,12 @@ public class MyPageController {
      */
     
     @GetMapping("/user/mypage")
-    public String getMySurveys(HttpSession session, Model model) {
+    public String getMySurveys(HttpServletRequest request,HttpSession session, Model model) {
         SessionUserDto user = (SessionUserDto) session.getAttribute("user");
         List<SurveySummaryResponse> responses = surveyService.getSurveysByUser(user.id());
         model.addAttribute("surveys", responses);
-        return "/member/mypage"; 
+        model.addAttribute("requestURI", request.getRequestURI());
+        return "member/mypage";
     }
     
     
