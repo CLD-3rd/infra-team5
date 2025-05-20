@@ -1,8 +1,7 @@
 package com.team5.surbee.controller;
 
-import com.team5.surbee.dto.response.SurveyMainResponse;
+import com.team5.surbee.dto.response.survey.SurveyMainResponse;
 import com.team5.surbee.service.SurveyService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

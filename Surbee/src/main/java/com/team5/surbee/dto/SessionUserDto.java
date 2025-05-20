@@ -1,5 +1,7 @@
 package com.team5.surbee.dto;
 
+import com.team5.surbee.entity.User;
+
 public record SessionUserDto(
         String username,
         String email,
@@ -11,5 +13,9 @@ public record SessionUserDto(
 
     public static SessionUserDto of(String username, Integer id) {
         return new SessionUserDto(username, null, id);
+    }
+
+    public static SessionUserDto from(User user) {
+        return new SessionUserDto(user.getUsername(), user.getEmail(), user.getId());
     }
 }

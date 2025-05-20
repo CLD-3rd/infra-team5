@@ -1,15 +1,18 @@
 package com.team5.surbee.repository;
 
-import java.util.List;
-
+import com.team5.surbee.entity.Survey;
+import com.team5.surbee.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.team5.surbee.dto.request.SurveyDto;
-import com.team5.surbee.entity.Survey;
+import java.util.List;
 
 public interface SurveyRepository extends JpaRepository<Survey, Integer> {
     List<Survey> findTop10ByIsClosedFalseOrderByCreatedAtDesc();
+
     List<Survey> findTop10ByIsClosedTrueOrderByCreatedAtDesc();
+
     List<Survey> findTop10ByOrderBySubmissionCountDesc();
+
+    List<Survey> findByUser(User user);
 }
 
