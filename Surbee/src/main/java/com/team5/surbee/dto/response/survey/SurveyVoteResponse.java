@@ -1,4 +1,4 @@
-package com.team5.surbee.dto.response;
+package com.team5.surbee.dto.response.survey;
 
 import com.team5.surbee.entity.Survey;
 

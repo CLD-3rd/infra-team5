@@ -4,9 +4,9 @@ import com.team5.surbee.common.exception.ErrorCode;
 import com.team5.surbee.common.exception.SurveyException;
 import com.team5.surbee.common.exception.UserExcpetion;
 import com.team5.surbee.dto.SurveyDto;
-import com.team5.surbee.dto.response.SurveyMainResponse;
-import com.team5.surbee.dto.response.SurveyMyResponse;
-import com.team5.surbee.dto.response.SurveyVoteResponse;
+import com.team5.surbee.dto.response.survey.SurveyMainResponse;
+import com.team5.surbee.dto.response.survey.SurveySummaryResponse;
+import com.team5.surbee.dto.response.survey.SurveyVoteResponse;
 import com.team5.surbee.entity.Option;
 import com.team5.surbee.entity.Question;
 import com.team5.surbee.entity.Survey;
@@ -30,19 +30,19 @@ public class SurveyService {
 
     @Transactional(readOnly = true)
     public SurveyMainResponse getMainSurveyList() {
-        List<SurveyDto> active = surveyRepository.findTop10ByIsClosedFalseOrderByCreatedAtDesc()
-                .stream().map(SurveyDto::from).toList();
+        List<Survey> active = surveyRepository.findTop10ByIsClosedFalseOrderByCreatedAtDesc();
 
-        List<SurveyDto> closed = surveyRepository.findTop10ByIsClosedTrueOrderByCreatedAtDesc()
-                .stream().map(SurveyDto::from).toList();
+        List<Survey> closed = surveyRepository.findTop10ByIsClosedTrueOrderByCreatedAtDesc();
 
-        List<SurveyDto> popular = surveyRepository.findTop10ByOrderBySubmissionCountDesc()
-                .stream().map(SurveyDto::from).toList();
+        List<Survey> popular = surveyRepository.findTop10ByOrderBySubmissionCountDesc();
 
         return SurveyMainResponse.builder()
-                .activeSurveys(active)
-                .closedSurveys(closed)
-                .popularSurveys(popular)
+                .activeSurveys(active.stream()
+                        .map(SurveySummaryResponse::from).toList())
+                .closedSurveys(closed.stream()
+                        .map(SurveySummaryResponse::from).toList())
+                .popularSurveys(popular.stream()
+                        .map(SurveySummaryResponse::from).toList())
                 .build();
     }
 
@@ -55,9 +55,7 @@ public class SurveyService {
                     List<Option> optionEntities = questionDto.options().stream()
                             .map(optionDto -> optionDto.toEntity(null)) // Question은 아래에서 연결
                             .toList();
-
                     Question question = questionDto.toEntity(null, optionEntities);
-
                     // Option → Question 역참조 설정
                     for (Option option : optionEntities) {
                         option.assignToQuestion(question);
@@ -66,15 +64,12 @@ public class SurveyService {
                     return question;
                 })
                 .toList();
-
         // 3. 설문 엔티티 생성
         Survey survey = surveyDto.toEntity(user, questionEntities);
-
         // Question → Survey 역참조 설정
         for (Question question : questionEntities) {
             question.assignToSurvey(survey);
         }
-
         // 4. 저장
         surveyRepository.save(survey);
     }
@@ -100,13 +95,13 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public List<SurveyMyResponse> getSurveysByUser(Integer userId) {
+    public List<SurveySummaryResponse> getSurveysByUser(Integer userId) {
         User user = getUserOrThrow(userId);
 
         List<Survey> surveys = surveyRepository.findByUser(user);
-        
+
         return surveys.stream()
-                .map(SurveyMyResponse::from)
+                .map(SurveySummaryResponse::from)
                 .toList();
     }
 

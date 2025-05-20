@@ -2,8 +2,8 @@ package com.team5.surbee.controller;
 
 import com.team5.surbee.dto.SessionUserDto;
 import com.team5.surbee.dto.request.SurveyCreateRequest;
-import com.team5.surbee.dto.response.SurveyMyResponse;
-import com.team5.surbee.dto.response.SurveyVoteResponse;
+import com.team5.surbee.dto.response.survey.SurveySummaryResponse;
+import com.team5.surbee.dto.response.survey.SurveyVoteResponse;
 import com.team5.surbee.service.SurveyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class SurveyController {
     @GetMapping("/my")
     public String getMySurveys(HttpSession session, Model model) {
         SessionUserDto user = (SessionUserDto) session.getAttribute("user");
-        List<SurveyMyResponse> responses = surveyService.getSurveysByUser(user.id());
+        List<SurveySummaryResponse> responses = surveyService.getSurveysByUser(user.id());
         model.addAttribute("surveys", responses);
         return "redirect:/"; // 이후 마이 페이지로 수정
     }
