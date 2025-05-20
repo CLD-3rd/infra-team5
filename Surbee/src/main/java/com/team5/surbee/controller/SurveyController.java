@@ -27,7 +27,6 @@ public class SurveyController {
         return "survey/create";
     }
 
-
     @PostMapping("/create")
     public String createSurvey(HttpSession httpSession, @ModelAttribute SurveyCreateRequest request) {
         SessionUserDto user = (SessionUserDto) httpSession.getAttribute("user");
@@ -64,4 +63,13 @@ public class SurveyController {
     }
 
 
+
+    @GetMapping("/{surveyId}/result")
+    public String getSurveyResult(@PathVariable Integer surveyId, Model model) {
+//        log.info("Controller : 응답 결과 출력 (id = {})", surveyId);
+//        SurveyResultResponse response = surveyService.getSurveyResult(surveyId);
+//        model.addAttribute("survey", response);
+//        log.info("Controller : response = {})", response);
+        return "result/stats";
+    }
 }
