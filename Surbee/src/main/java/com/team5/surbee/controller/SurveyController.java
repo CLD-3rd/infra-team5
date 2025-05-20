@@ -27,6 +27,7 @@ public class SurveyController {
         return "survey/create";
     }
 
+
     @PostMapping("/create")
     public String createSurvey(HttpSession httpSession, @ModelAttribute SurveyCreateRequest request) {
         SessionUserDto user = (SessionUserDto) httpSession.getAttribute("user");
@@ -55,4 +56,12 @@ public class SurveyController {
         model.addAttribute("surveys", responses);
         return "redirect:/"; // 이후 마이 페이지로 수정
     }
+
+    @GetMapping("/answer")
+    public String showAnswerPage(Model model) {
+        // 실제로는 설문 데이터를 서비스에서 불러와야 합니다.
+        return "survey/answer";
+    }
+
+
 }

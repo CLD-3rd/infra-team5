@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>설문 응답 : Surbee</title>
+  <link rel="stylesheet" th:href="@{/css/survey-answer.css}" />
+  <!-- Font Awesome 아이콘 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<section layout:fragment="content">
+  <div class="survey-container">
+    <form class="survey-form" th:action="@{/surveys/create}" th:method="post" th:object="${survey}">
+      <div class="empty-section"></div>
+
+        <!-- 설문지 제목/설명 -->
+      <div class="survey-header">
+        <div class="title-section">
+          <h1 class="survey-title">더미 설문지 제목</h1>
+          <p class="survey-description">더미 설문지 설명</p>
+        </div>
+      </div>
+
+      <!-- 질문 목록 -->
+      <div class="questions-container" id="questions-container">
+
+        <div class="question-box">
+          <div class="question-header">
+            <h3 class="question-text" >객관식 질문</h3>
+          </div>
+
+          <div class="question-body">
+            <label>
+              <input type="radio" name="question1" value="option1">
+              옵션 1
+            </label>
+            <label>
+              <input type="radio" name="question1" value="option2">
+              옵션 2
+            </label>
+            <label>
+              <input type="radio" name="question1" value="option3">
+              옵션 3
+            </label>
+          </div>
+
+        </div>
+
+        <div class="question-box">
+
+          <div class="question-header">
+            <h3 class="question-text" >다중선택 질문</h3>
+          </div>
+
+          <div class="question-body">
+            <label>
+              <input type="checkbox" name="question2" value="option1">
+              옵션 1
+            </label>
+            <label>
+              <input type="checkbox" name="question2" value="option2">
+              옵션 2
+            </label>
+            <label>
+              <input type="checkbox" name="question2" value="option3">
+              옵션 3
+            </label>
+          </div>
+
+        </div>
+          <div class="answer-box">
+            <div class="answer-header">
+              <h3 class="answer-text" >단답형 질문</h3>
+            </div>
+
+            <div class="answer-body">
+              <label>
+                <input type="text" class="answer-text" name="questions[0].questionText" placeholder="답변">
+              </label>
+            </div>
+          </div>
+
+
+
+
+          <div class="answer-box">
+            <div class="answer-header">
+              <h3 class="answer-text" >장문형 질문</h3>
+            </div>
+
+            <div class="answer-body">
+              <label>
+                <input type="text" class="answer-text" name="questions[0].questionText" placeholder="답변">
+              </label>
+            </div>
+
+          </div>
+
+      </div>
+
+      <!-- 제출 버튼 -->
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">제출하기</button>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="preview-btn">중간결과</button>
+      </div>
+    </form>
+  </div>
+</section>
+</body>
+</html>
+
+<!-- 질문 목록 -->
+<!--<div class="questions-container">-->
+<!--  <div class="question-box" th:each="question, qStat : ${survey.questions}">-->
+<!--    <div class="question-header">-->
+<!--      <h3 class="question-text" th:text="${question.questionText}">질문</h3>-->
+<!--      <span class="required-badge" th:if="${question.isRequired}">필수</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 객관식 질문 &ndash;&gt;-->
+<!--    <div class="options-container" th:if="${question.type == 'MULTIPLE_CHOICE'}">-->
+<!--      <div class="option" th:each="option, oStat : ${question.options}">-->
+<!--        <label class="radio-label">-->
+<!--          <input type="radio" th:name="'responses[' + ${qStat.index} + '].selectedOptions'"-->
+<!--                 th:value="${option.id}" th:required="${question.isRequired}">-->
+<!--          <span th:text="${option.optionText}">옵션 텍스트</span>-->
+<!--        </label>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 체크박스 질문 &ndash;&gt;-->
+<!--    <div class="options-container" th:if="${question.type == 'CHECKBOX'}">-->
+<!--      <div class="option" th:each="option, oStat : ${question.options}">-->
+<!--        <label class="checkbox-label">-->
+<!--          <input type="checkbox" th:name="'responses[' + ${qStat.index} + '].selectedOptions'"-->
+<!--                 th:value="${option.id}">-->
+<!--          <span th:text="${option.optionText}">옵션 텍스트</span>-->
+<!--        </label>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 단답형 질문 &ndash;&gt;-->
+<!--    <div class="text-answer-container" th:if="${question.type == 'SHORT_ANSWER'}">-->
+<!--      <input type="text" class="short-answer"-->
+<!--             th:name="'responses[' + ${qStat.index} + '].textResponse'"-->
+<!--             placeholder="답변을 입력하세요" th:required="${question.isRequired}">-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; 장문형 질문 &ndash;&gt;-->
+<!--    <div class="text-answer-container" th:if="${question.type == 'LONG_ANSWER'}">-->
+<!--                        <textarea class="long-answer" rows="4"-->
+<!--                                  th:name="'responses[' + ${qStat.index} + '].textResponse'"-->
+<!--                                  placeholder="답변을 입력하세요" th:required="${question.isRequired}"></textarea>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
