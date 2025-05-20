@@ -2,6 +2,7 @@ package com.team5.surbee.controller;
 
 import com.team5.surbee.dto.SessionUserDto;
 import com.team5.surbee.dto.request.SurveyCreateRequest;
+import com.team5.surbee.dto.response.survey.SurveyResultResponse;
 import com.team5.surbee.dto.response.survey.SurveySummaryResponse;
 import com.team5.surbee.dto.response.survey.SurveyVoteResponse;
 import com.team5.surbee.service.SurveyService;
@@ -26,7 +27,6 @@ public class SurveyController {
     public String showCreateSurveyPage(Model model) {
         return "survey/create";
     }
-
 
     @PostMapping("/create")
     public String createSurvey(HttpSession httpSession, @ModelAttribute SurveyCreateRequest request) {
@@ -64,4 +64,12 @@ public class SurveyController {
     }
 
 
+    @GetMapping("/{surveyId}/result")
+    public String getSurveyResult(@PathVariable Integer surveyId, Model model) {
+        log.info("Controller : 응답 결과 출력 (id = {})", surveyId);
+        SurveyResultResponse response = surveyService.getSurveyResult(surveyId);
+        model.addAttribute("survey", response);
+        log.info("Controller : response = {})", response);
+        return "result/stats";
+    }
 }

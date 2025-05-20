@@ -40,6 +40,10 @@ public class Question {
     @ToString.Exclude
     private List<Option> options = new ArrayList<>();
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Answer> answers = new ArrayList<>();
+
     private Question(String questionText, QuestionType questionType, Boolean isRequired, Survey survey, List<Option> options) {
         this.questionText = questionText;
         this.questionType = questionType;
