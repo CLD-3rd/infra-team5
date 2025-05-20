@@ -25,8 +25,8 @@ services:
     ports:
       - 8080:8080
     environment:
-      - MYSQL_HOST: db  # 환경변수를 외부로부터 주입받음.
-      - SPRING_PROFILES_ACTIVE: private
+      MYSQL_HOST : db  # 환경변수를 외부로부터 주입받음.
+      SPRING_PROFILES_ACTIVE : private 
     depends_on: # db 실행 확인
       db:
         condition: service_healthy
@@ -38,7 +38,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - app-network
 
