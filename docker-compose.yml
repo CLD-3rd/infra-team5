@@ -25,9 +25,9 @@ services:
     ports:
       - 8080:8080
     environment:
-      MYSQL_HOST : db  # 환경변수를 외부로부터 주입받음.
-      SPRING_PROFILES_ACTIVE : private 
-    depends_on: # db 실행 확인
+      MYSQL_HOST : db
+      SPRING_PROFILES_ACTIVE : private
+    depends_on:
       db:
         condition: service_healthy
     networks:
@@ -44,13 +44,14 @@ services:
 
   mysqld-exporter:
     image: prom/mysqld-exporter
-    environment:
-      DATA_SOURCE_NAME: root:${DB_ROOT_PASSWORD}@(db:3306)/
+    volumes:
+      - ./exporter/.my.cnf:/config/.my.cnf:ro
+    command: ["--config.my-cnf=/config/.my.cnf"]
     ports:
       - "9104:9104"
     networks:
       - app-network
-  
+
   grafana:
     image: grafana/grafana
     ports:
