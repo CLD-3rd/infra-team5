@@ -26,7 +26,7 @@ services:
       - 8080:8080
     environment:
       - MYSQL_HOST: db  # 환경변수를 외부로부터 주입받음.
-      - SPRING_PROFILES_ACTIVE=private 
+      - SPRING_PROFILES_ACTIVE: private
     depends_on: # db 실행 확인
       db:
         condition: service_healthy
