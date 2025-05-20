@@ -27,7 +27,6 @@ public class SurveyController {
         return "survey/create";
     }
 
-
     @PostMapping("/create")
     public String createSurvey(HttpSession httpSession, @ModelAttribute SurveyCreateRequest request) {
         SessionUserDto user = (SessionUserDto) httpSession.getAttribute("user");
@@ -64,4 +63,11 @@ public class SurveyController {
     }
 
 
+
+    @GetMapping("/{surveyId}/result")
+    public String getSurveyResult(@PathVariable Integer surveyId, Model model) {
+
+//        model.addAttribute("survey", survey);
+        return "result/stats";
+    }
 }

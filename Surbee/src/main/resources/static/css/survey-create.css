@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 /* 공통 */
 input, textarea {
     border: 1px solid #DDDDDD;
@@ -28,9 +29,6 @@ input:focus, textarea:focus {
 .survey-container {
     padding: 20px;
     min-height: 100vh;
-}
-
-.survey-form {
     max-width: 800px;
     margin: 0 auto;
 }
@@ -40,7 +38,7 @@ input:focus, textarea:focus {
     border-radius: 0 0 10px 10px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .empty-section {
@@ -51,7 +49,7 @@ input:focus, textarea:focus {
 }
 
 .survey-title {
-    width:  100%;
+    width: 100%;
     font-size: 25px;
     padding: 8px;
     margin-bottom: 10px;
@@ -98,7 +96,7 @@ input:focus, textarea:focus {
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .question-header {
@@ -161,6 +159,23 @@ input:focus, textarea:focus {
     margin-bottom: 15px;
 }
 
+.result-container {
+    width: 70%;
+    margin: 15px auto;
+}
+
+.text-result-container {
+    margin: 15px 5px;
+}
+
+.text-answer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    list-style: none;
+    padding-left: 0;
+}
+
 .option {
     display: flex;
     justify-content: space-between;
@@ -171,6 +186,7 @@ input:focus, textarea:focus {
 .option .radio-label {
     flex: 1;
 }
+
 .option .checkbox-label {
     flex: 1;
 }
@@ -184,7 +200,7 @@ input:focus, textarea:focus {
 
 .delete-btn.hidden,
 .ai-btn.hidden {
-    visibility:  hidden;
+    visibility: hidden;
 }
 
 .text-input-container {
@@ -274,7 +290,7 @@ input:checked + .slider:before {
 }
 
 .add-question-btn,
-.delete-question-btn{
+.delete-question-btn {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -287,7 +303,7 @@ input:checked + .slider:before {
 }
 
 .delete-question-btn.hidden {
-    visibility:  hidden;
+    visibility: hidden;
 }
 
 .save-btn {
