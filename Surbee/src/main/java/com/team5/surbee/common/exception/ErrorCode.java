@@ -13,6 +13,9 @@ public enum ErrorCode {
     SURVEY_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "설문을 찾을 수 없습니다."),
     SURVEY_ACCESS_DENIED(HttpStatus.FORBIDDEN, "S002", "설문에 접근할 수 없습니다."),
     SURVEY_DELETE_FORBIDDEN(HttpStatus.FORBIDDEN, "S003", "설문을 삭제할 권한이 없습니다."),
+    SURVEY_ALREADY_CLOSED(HttpStatus.BAD_REQUEST, "S004", "이미 종료된 설문입니다."),
+    SURVEY_UPDATE_FORBIDDEN(HttpStatus.FORBIDDEN, "S005", "설문을 수정할 권한이 없습니다."),
+    
     
     // ❓ Question
     QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "Q001", "질문을 찾을 수 없습니다."),

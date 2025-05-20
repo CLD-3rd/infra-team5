@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @ToString
 @Getter
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,7 +35,8 @@ public class Survey {
 
     @Column(nullable = false)
     private boolean isPublic;
-
+    
+    @Setter
     @Column(nullable = false)
     private boolean isClosed;
 
