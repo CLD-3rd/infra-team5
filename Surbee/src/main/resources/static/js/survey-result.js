@@ -5,17 +5,17 @@ export function renderSurveyCharts(surveyData) {
         const labels = question.options.map(o => o.optionText);
         const data = question.options.map(o => o.count);
 
-        const ctxId = question.type === 'MULTIPLE_CHOICE'
+        const ctxId = question.questionType === 'MULTIPLE_CHOICE'
             ? `chart-pie-${index}`
             : `chart-bar-${index}`;
 
         const ctx = document.getElementById(ctxId);
         if (!ctx) return;
 
-        const isPieChart = question.type === 'MULTIPLE_CHOICE';
+        const isPieChart = question.questionType === 'MULTIPLE_CHOICE';
 
         new Chart(ctx, {
-            type: question.type === 'MULTIPLE_CHOICE' ? 'pie' : 'bar',
+            type: question.questionType === 'MULTIPLE_CHOICE' ? 'pie' : 'bar',
             data: {
                 labels: labels,
                 datasets: [{

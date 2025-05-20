@@ -48,4 +48,8 @@ public class Answer {
     public static Answer optionAnswer(Question question, Option option, Submission submission) {
         return new Answer(question, option, null, submission);
     }
+
+    public void assignToSubmission(Submission submission) {
+        this.submission = submission;
+    }
 }

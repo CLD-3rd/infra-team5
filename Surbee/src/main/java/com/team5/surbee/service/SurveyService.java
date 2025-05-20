@@ -4,13 +4,13 @@ import com.team5.surbee.common.exception.ErrorCode;
 import com.team5.surbee.common.exception.SurveyException;
 import com.team5.surbee.common.exception.UserExcpetion;
 import com.team5.surbee.dto.SurveyDto;
-import com.team5.surbee.dto.response.survey.SurveyMainResponse;
-import com.team5.surbee.dto.response.survey.SurveySummaryResponse;
-import com.team5.surbee.dto.response.survey.SurveyVoteResponse;
+import com.team5.surbee.dto.response.survey.*;
 import com.team5.surbee.entity.Option;
 import com.team5.surbee.entity.Question;
 import com.team5.surbee.entity.Survey;
 import com.team5.surbee.entity.User;
+import com.team5.surbee.entity.constant.QuestionType;
+import com.team5.surbee.repository.AnswerRepository;
 import com.team5.surbee.repository.SurveyRepository;
 import com.team5.surbee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.team5.surbee.common.exception.ErrorCode.SURVEY_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -27,6 +32,7 @@ public class SurveyService {
     // Question, Option은 여기서 처리
     private final SurveyRepository surveyRepository;
     private final UserRepository userRepository;
+    private final AnswerRepository answerRepository;
 
     @Transactional(readOnly = true)
     public SurveyMainResponse getMainSurveyList() {
@@ -122,6 +128,67 @@ public class SurveyService {
     }
 
 
+    @Transactional
+    public SurveyResultResponse getSurveyResult(Integer surveyId) {
+        Survey survey = surveyRepository.findByIdWithQuestions(surveyId)
+                .orElseThrow(() -> new RuntimeException(SURVEY_NOT_FOUND.getMessage()));
+
+        List<QuestionResultResponse> questionResults = new ArrayList<>();
+
+        for (Question question : survey.getQuestions()) {
+            QuestionResultResponse response;
+
+            if (question.getQuestionType() == QuestionType.MULTIPLE_CHOICE ||
+                    question.getQuestionType() == QuestionType.CHECKBOX) {
+
+                List<SurveyOptionStat> stats = answerRepository.countAnswersByOption(question.getId());
+                long total = stats.stream().mapToLong(SurveyOptionStat::count).sum();
+
+                List<OptionResultResponse> options = stats.stream()
+                        .map(stat -> new OptionResultResponse(
+                                stat.optionId(),
+                                stat.optionText(),
+                                stat.count(),
+                                total == 0 ? 0.0 :
+                                        BigDecimal.valueOf((double) stat.count() * 100 / total)
+                                                .setScale(1, RoundingMode.HALF_UP)
+                                                .doubleValue()
+                        ))
+                        .toList();
+
+                response = new QuestionResultResponse(
+                        question.getId(),
+                        question.getQuestionText(),
+                        question.getQuestionType(),
+                        total,
+                        options,
+                        null
+                );
+
+            } else {
+                List<String> answers = answerRepository.findTextAnswersByQuestionId(question.getId());
+
+                response = new QuestionResultResponse(
+                        question.getId(),
+                        question.getQuestionText(),
+                        question.getQuestionType(),
+                        answers.stream().count(),
+                        null,
+                        answers
+                );
+            }
+
+            questionResults.add(response);
+        }
+
+        return new SurveyResultResponse(
+                survey.getId(),
+                survey.getTitle(),
+                survey.getDescription(),
+                questionResults
+        );
+    }
+
     private User getUserOrThrow(Integer userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserExcpetion(ErrorCode.USER_NOT_FOUND));
@@ -129,6 +196,6 @@ public class SurveyService {
 
     private Survey getSurveyOrThrow(Integer surveyId) {
         return surveyRepository.findById(surveyId)
-                .orElseThrow(() -> new SurveyException(ErrorCode.SURVEY_NOT_FOUND));
+                .orElseThrow(() -> new SurveyException(SURVEY_NOT_FOUND));
     }
 }
