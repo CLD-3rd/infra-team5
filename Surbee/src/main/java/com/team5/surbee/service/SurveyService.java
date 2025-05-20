@@ -104,6 +104,23 @@ public class SurveyService {
                 .map(SurveySummaryResponse::from)
                 .toList();
     }
+    
+    @Transactional
+    public void closeSurvey(Integer surveyId, Integer userId) {
+        Survey survey = getSurveyOrThrow(surveyId);
+
+        if (!survey.getUser().getId().equals(userId)) {
+            throw new SurveyException(ErrorCode.SURVEY_UPDATE_FORBIDDEN);
+        }
+
+        if (survey.isClosed()) {
+            throw new SurveyException(ErrorCode.SURVEY_ALREADY_CLOSED);
+        }
+
+        survey.setClosed(true);
+        surveyRepository.save(survey); 
+    }
+
 
     private User getUserOrThrow(Integer userId) {
         return userRepository.findById(userId)
