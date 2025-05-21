@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>설문 응답 : Surbee</title>
     <link rel="stylesheet" th:href="@{/css/survey-create.css}"/>
+    <link rel="stylesheet" th:href="@{/css/survey-answer.css}"/>
+    <script th:src="@{/js/survey-answer.js}"></script>
+    <!-- Font Awesome 아이콘 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -34,8 +37,11 @@
                     <div th:case="'MULTIPLE_CHOICE'">
                         <div class="question-header">
                             <h3 th:text="${question.questionText}">객관식 질문</h3>
-                            <span class="type-description">다중 선택 X</span>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
                         </div>
+                        <hr>
+                        <div class="type-description">다중 선택 X</div>
                         <div class="options-container" th:each="option : ${question.options}">
                             <div class="option">
                                 <label class="radio-label">
@@ -52,8 +58,11 @@
                     <div th:case="'CHECKBOX'">
                         <div class="question-header">
                             <h3 th:text="${question.questionText}">체크박스 질문</h3>
-                            <span class="type-description">다중 선택 O</span>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
                         </div>
+                        <hr>
+                        <div class="type-description">다중 선택 O</div>
                         <div class="options-container" th:each="option : ${question.options}">
                             <div class="option">
                                 <label class="checkbox-label">
@@ -70,8 +79,11 @@
                     <div th:case="'SHORT_ANSWER'">
                         <div class="question-header">
                             <h3 th:text="${question.questionText}">단답형 질문</h3>
-                            <div class="type-description">최대 50자 이내</div>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
                         </div>
+                        <hr>
+                        <div class="type-description">최대 50자 이내</div>
                         <div class="text-input-container">
                             <input class="text-input"
                                    placeholder="답변"
@@ -84,8 +96,11 @@
                     <div th:case="'LONG_ANSWER'">
                         <div class="question-header">
                             <h3 th:text="${question.questionText}">장문형 질문</h3>
-                            <div class="type-description">최소 100자 이상</div>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
                         </div>
+                        <hr>
+                        <div class="type-description">최소 100자 이상</div>
                         <div class="text-input-container">
                             <textarea class="text-input"
                                       placeholder="답변"
