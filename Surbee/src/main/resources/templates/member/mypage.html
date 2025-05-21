@@ -100,7 +100,7 @@
     <div class="mypage-title">나의 설문 목록</div>
 
     <div class="action-buttons">
-        <button class="btn btn-primary" onclick="location.href='/survey/create'">설문 생성하기</button>
+        <button class="btn btn-primary" onclick="location.href='/surveys/create'">설문 생성하기</button>
         <button class="btn btn-delete" onclick="deleteSurveys()">삭제</button>
     </div>
 
@@ -156,7 +156,7 @@
 
 
     function viewResults(id) {
-        location.href = '/survey/results/' + id;
+        location.href = '/surveys/' + id + '/result';
     }
 
     function deleteSurveys() {
