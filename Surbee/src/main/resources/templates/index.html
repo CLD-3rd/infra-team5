@@ -29,7 +29,7 @@
                 <ul class="survey-list">
                     <li th:each="survey : ${surveys.activeSurveys}">
                         <a th:if="${!survey.closed}" th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                        <a th:if="${survey.closed}" th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:if="${survey.closed}" th:href="@{'/surveys/' + ${survey.id} + '/result'}" th:text="${survey.title}">설문 제목</a>
                         <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
                     </li>
                 </ul>
@@ -40,7 +40,7 @@
                 <ul class="survey-list">
                     <li th:each="survey : ${surveys.popularSurveys}">
                         <a th:if="${!survey.closed}" th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                        <a th:if="${survey.closed}" th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:if="${survey.closed}" th:href="@{'/surveys/' + ${survey.id} + '/result'}" th:text="${survey.title}">설문 제목</a>
                         <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
                     </li>
                 </ul>
@@ -52,14 +52,13 @@
                 <h3>종료된 설문</h3>
                 <ul class="survey-list">
                     <li th:each="survey : ${surveys.closedSurveys}">
-                        <a th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:href="@{'/surveys/' + ${survey.id} + '/result'}" th:text="${survey.title}">설문 제목</a>
                         <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
-
 </section>
 
 <div layout:fragment="script">

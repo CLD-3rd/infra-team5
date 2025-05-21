@@ -63,9 +63,8 @@ public class SurveyController {
         return "survey/answer";
     }
 
-
     @GetMapping("/{surveyId}/result")
-    public String getSurveyResult(@PathVariable Integer surveyId, Model model) {
+    public String getSurveyResult(@PathVariable("surveyId") Integer surveyId, Model model) {
         log.info("Controller : 응답 결과 출력 (id = {})", surveyId);
         SurveyResultResponse response = surveyService.getSurveyResult(surveyId);
         model.addAttribute("survey", response);
