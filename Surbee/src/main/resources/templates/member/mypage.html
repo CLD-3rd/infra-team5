@@ -1,194 +1,54 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html layout:decorate="~{layout/layout}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>마이페이지 - Surbee</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #fff9e0;
-        }
-
-        .main-content {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .mypage-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .btn-primary,
-        .btn-delete {
-            background-color: white;
-            color: black;
-        }
-
-        .survey-list {
-            background-color: #ffcc00;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .survey-item {
-            background-color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-
-        .survey-left {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-
-        .survey-checkbox {
-            margin-right: 10px;
-        }
-
-        .survey-title {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .survey-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .status-btn {
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 15px;
-            padding: 5px 12px;
-            font-size: 12px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-    </style>
+    <link rel="stylesheet" th:href="@{/css/survey-common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/mypage.css}"/>
+    <script th:src="@{/js/mypage.js}"></script>
 </head>
 <body>
-<div layout:fragment="content" class="main-content">
-    <div class="mypage-title">나의 설문 목록</div>
-
-    <div class="action-buttons">
-        <button class="btn btn-primary" onclick="location.href='/surveys/create'">설문 생성하기</button>
-        <button class="btn btn-delete" onclick="deleteSurveys()">삭제</button>
-    </div>
-
-    <div class="survey-list">
-        <!-- 설문 목록 -->
-        <div th:each="survey : ${surveys}" class="survey-item">
-            <div class="survey-left">
-                <input type="checkbox" class="survey-checkbox"
-                       th:id="'survey-' + ${survey.id}"
-                       th:name="selectedSurveys"
-                       th:value="${survey.id}">
-                <span class="survey-title" th:text="${survey.title}">질문 제목</span>
-            </div>
-            <div class="survey-buttons">
-                <button class="status-btn" th:onclick="'endSurvey(' + ${survey.id} + ')'"
-                        th:if="${!survey.isClosed}">종료</button>
-                <button class="status-btn"
-                        th:onclick="'viewResults(' + ${survey.id} + ')'"
-                        th:text="${survey.isClosed ? '결과' : '중간결과'}">결과</button>
-            </div>
+<section layout:fragment="content">
+    <div class="survey-container">
+        <div class="empty-section"></div>
+        <div class="survey-header">
+            <span class="mypage-title">나의 설문 목록</span>
         </div>
 
-        <!-- 설문 없을 경우 -->
-        <div th:if="${#lists.isEmpty(surveys)}" class="survey-item">
-            <span class="survey-title">작성한 설문이 없습니다.</span>
+
+        <div class="survey-list">
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="location.href='/surveys/create'">설문 생성하기</button>
+                <button class="btn btn-delete" onclick="deleteSurveys()">삭제</button>
+            </div>
+            <!-- 설문 목록 -->
+            <div class="survey-item" th:each="survey : ${surveys}">
+                <label class="checkbox-label">
+                    <input class="survey-checkbox" th:id="'survey-' + ${survey.id}"
+                           th:name="selectedSurveys"
+                           th:value="${survey.id}"
+                           type="checkbox">
+                    <span class="mypage-survey-title" th:text="${survey.title}">설문 제목</span>
+                </label>
+                <div class="survey-buttons">
+                    <button class="status-btn" th:if="${!survey.isClosed}"
+                            th:onclick="'endSurvey(' + ${survey.id} + ')'">종료
+                    </button>
+                    <button class="status-btn"
+                            th:onclick="'viewResults(' + ${survey.id} + ')'"
+                            th:text="${survey.isClosed ? '결과' : '중간결과'}">결과
+                    </button>
+                </div>
+            </div>
+
+            <!-- 설문 없을 경우 -->
+            <div class="survey-item" th:if="${#lists.isEmpty(surveys)}">
+                <span class="survey-title">작성한 설문이 없습니다.</span>
+            </div>
         </div>
     </div>
-</div>
-<div layout:fragment="script">
-<script th:inline="javascript">
-	function endSurvey(id) {
-    if (confirm('설문을 종료하시겠습니까?')) {
-       fetch('/survey/' + id + '/close', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include'
-        }).then(response => {
-            if (response.ok) {
-                alert('설문이 종료되었습니다.');
-                location.reload();
-            } else {
-                alert('설문 종료에 실패했습니다.');
-            }
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('설문 종료 중 오류가 발생했습니다.');
-        });
-    }
-}
-
-
-
-    function viewResults(id) {
-        location.href = '/surveys/' + id + '/result';
-    }
-
-    function deleteSurveys() {
-        const selectedSurveys = document.querySelectorAll('input[name="selectedSurveys"]:checked');
-
-        if (selectedSurveys.length === 0) {
-            alert('삭제할 설문을 선택해주세요.');
-            return;
-        }
-
-        if (confirm('선택한 설문을 삭제하시겠습니까?')) {
-            const surveyIds = Array.from(selectedSurveys).map(checkbox => checkbox.value);
-
-            fetch('/delete', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ids: surveyIds})
-            }).then(response => {
-                if (response.ok) {
-                    alert('선택한 설문이 삭제되었습니다.');
-                    location.reload();
-                } else {
-                    alert('설문 삭제에 실패했습니다.');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('설문 삭제 중 오류가 발생했습니다.');
-            });
-        }
-    }
-</script>
+</section>
 </body>
 </html>

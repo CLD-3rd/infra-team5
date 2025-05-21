@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SurveyRepository extends JpaRepository<Survey, Integer> {
-    List<Survey> findTop10ByIsClosedFalseOrderByCreatedAtDesc();
+    List<Survey> findTop10ByIsClosedFalseAndIsPublicTrueOrderByCreatedAtDesc();
 
-    List<Survey> findTop10ByIsClosedTrueOrderByCreatedAtDesc();
+    List<Survey> findTop10ByIsClosedTrueAndIsPublicTrueOrderByCreatedAtDesc();
 
-    List<Survey> findTop10ByOrderBySubmissionCountDesc();
+    List<Survey> findTop10ByIsPublicTrueOrderBySubmissionCountDesc();
 
     List<Survey> findByUser(User user);
 
