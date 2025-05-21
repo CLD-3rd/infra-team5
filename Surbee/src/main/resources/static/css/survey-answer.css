@@ -1,0 +1,20 @@
+.text-input-container {
+    margin-bottom: 15px;
+}
+
+.required-label {
+    color: red;
+    font-size: 0.9em;
+    margin-left: 10px;
+}
+
+.unanswered-highlight {
+    border: 2px solid red;
+    animation: blink 0.5s step-end 4 alternate;
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}

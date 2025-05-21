@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>설문 응답 : Surbee</title>
+    <link rel="stylesheet" th:href="@{/css/survey-common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/survey-answer.css}"/>
+    <script th:src="@{/js/survey-answer.js}"></script>
+    <!-- Font Awesome 아이콘 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="survey-container">
+        <form class="survey-form"
+              th:action="@{/surveys/{id}/answer(id=${survey.id})}"
+              th:method="post">
+            <!-- surveyId를 hidden 필드로 전달 -->
+            <input name="surveyId" th:value="${survey.id}" type="hidden"/>
+            <!-- 설문지 제목/설명 -->
+            <div class="empty-section"></div>
+            <div class="survey-header">
+                <div class="title-section">
+                    <h1 th:text="${survey.title}">설문지 제목</h1>
+                    <p th:text="${survey.description}">설문지 설명</p>
+                </div>
+            </div>
+            <!-- 질문 반복 -->
+            <div class="questions-container"
+                 th:each="question, iterStat : ${survey.questions}">
+                <div class="question-box"
+                     th:attr="id=${'question-' + iterStat.index}"
+                     th:classappend="${question.isRequired} ? ' required-question' : ''"
+                     th:switch="${question.questionType.name}">
+
+                    <!-- 공통: questionId 전달 -->
+                    <input th:name="${'answers[' + iterStat.index + '].questionId'}" th:value="${question.id}"
+                           type="hidden"/>
+
+                    <!-- MULTIPLE_CHOICE -->
+                    <div th:case="'MULTIPLE_CHOICE'">
+                        <div class="question-header">
+                            <h3 th:text="${question.questionText}">객관식 질문</h3>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
+                        </div>
+                        <hr>
+                        <div class="type-description">다중 선택 X</div>
+                        <div class="options-container" th:each="option : ${question.options}">
+                            <div class="option">
+                                <label class="radio-label">
+                                    <input th:name="${'answers[' + iterStat.index + '].selectedOptionIds'}"
+                                           th:value="${option.id}"
+                                           type="radio"/>
+                                    <span th:text="${option.optionText}">옵션</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CHECKBOX -->
+                    <div th:case="'CHECKBOX'">
+                        <div class="question-header">
+                            <h3 th:text="${question.questionText}">체크박스 질문</h3>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
+                        </div>
+                        <hr>
+                        <div class="type-description">다중 선택 O</div>
+                        <div class="options-container" th:each="option : ${question.options}">
+                            <div class="option">
+                                <label class="checkbox-label">
+                                    <input th:name="${'answers[' + iterStat.index + '].selectedOptionIds'}"
+                                           th:value="${option.id}"
+                                           type="checkbox"/>
+                                    <span th:text="${option.optionText}">옵션</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHORT_ANSWER -->
+                    <div th:case="'SHORT_ANSWER'">
+                        <div class="question-header">
+                            <h3 th:text="${question.questionText}">단답형 질문</h3>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
+                        </div>
+                        <hr>
+                        <div class="type-description">최대 50자 이내</div>
+                        <div class="text-input-container">
+                            <input class="text-input"
+                                   placeholder="답변"
+                                   th:name="${'answers[' + iterStat.index + '].answerText'}"
+                                   type="text"/>
+                        </div>
+                    </div>
+
+                    <!-- LONG_ANSWER -->
+                    <div th:case="'LONG_ANSWER'">
+                        <div class="question-header">
+                            <h3 th:text="${question.questionText}">장문형 질문</h3>
+                            <h3 class="required-label" th:if="${question.isRequired}">필수 질문입니다
+                                <i class="fas fa-exclamation-circle"></i></h3>
+                        </div>
+                        <hr>
+                        <div class="type-description">최소 100자 이상</div>
+                        <div class="text-input-container">
+                            <textarea class="text-input"
+                                      placeholder="답변"
+                                      th:name="${'answers[' + iterStat.index + '].answerText'}"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 기타 -->
+                    <div th:case="*">
+                        <p>알 수 없는 질문 유형입니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 제출 버튼 -->
+            <div class="form-actions">
+                <button class="submit-btn" type="submit">제출하기</button>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

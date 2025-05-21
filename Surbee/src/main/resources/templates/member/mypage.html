@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지 - Surbee</title>
+    <link rel="stylesheet" th:href="@{/css/survey-common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/mypage.css}"/>
+    <script th:src="@{/js/mypage.js}"></script>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="survey-container">
+        <div class="empty-section"></div>
+        <div class="survey-header">
+            <span class="mypage-title">나의 설문 목록</span>
+        </div>
+
+
+        <div class="survey-list">
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="location.href='/surveys/create'">설문 생성하기</button>
+                <button class="btn btn-delete" onclick="deleteSurveys()">삭제</button>
+            </div>
+            <!-- 설문 목록 -->
+            <div class="survey-item" th:each="survey : ${surveys}">
+                <label class="checkbox-label">
+                    <input class="survey-checkbox" th:id="'survey-' + ${survey.id}"
+                           th:name="selectedSurveys"
+                           th:value="${survey.id}"
+                           type="checkbox">
+                    <span class="mypage-survey-title" th:text="${survey.title}">설문 제목</span>
+                </label>
+                <div class="survey-buttons">
+                    <button class="status-btn" th:if="${!survey.isClosed}"
+                            th:onclick="'endSurvey(' + ${survey.id} + ')'">종료
+                    </button>
+                    <button class="status-btn"
+                            th:onclick="'viewResults(' + ${survey.id} + ')'"
+                            th:text="${survey.isClosed ? '결과' : '중간결과'}">결과
+                    </button>
+                </div>
+            </div>
+
+            <!-- 설문 없을 경우 -->
+            <div class="survey-item" th:if="${#lists.isEmpty(surveys)}">
+                <span class="survey-title">작성한 설문이 없습니다.</span>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

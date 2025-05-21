@@ -1,0 +1,93 @@
+.site-description {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.survey-section {
+    margin-bottom: 20px;
+}
+
+.survey-header {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.survey-title {
+    margin: 0;
+    margin-right: 20px;
+}
+
+.survey-tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.survey-tab {
+    background-color: #ffcc00;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.survey-tab.active {
+    background-color: #e6b800;
+}
+
+.survey-grid {
+    display: flex;
+    gap: 20px;
+}
+
+.survey-box {
+    background-color: #ffcc00;
+    padding: 20px;
+    border-radius: 5px;
+    flex: 1;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.survey-list {
+    margin-top: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+.survey-list li {
+    background-color: white;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.survey-list li a {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+    flex-grow: 1;
+}
+
+.survey-list li a:hover {
+    color: blue;
+    text-decoration: underline;
+}
+
+.survey-list li span {
+    margin-left: 10px;
+    white-space: nowrap;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.hidden {
+    display: none;
+}
