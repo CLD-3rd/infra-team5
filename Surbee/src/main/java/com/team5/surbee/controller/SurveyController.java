@@ -1,10 +1,11 @@
 package com.team5.surbee.controller;
 
 import com.team5.surbee.dto.SessionUserDto;
+import com.team5.surbee.dto.request.SurveyAnswerRequest;
 import com.team5.surbee.dto.request.SurveyCreateRequest;
 import com.team5.surbee.dto.response.survey.SurveyResultResponse;
-import com.team5.surbee.dto.response.survey.SurveySummaryResponse;
 import com.team5.surbee.dto.response.survey.SurveyVoteResponse;
+import com.team5.surbee.service.SubmissionService;
 import com.team5.surbee.service.SurveyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +21,7 @@ import java.util.List;
 public class SurveyController {
 
     private final SurveyService surveyService;
+    private final SubmissionService submissionService;
 
     @GetMapping("/create")
     public String showCreateSurveyPage(Model model) {
@@ -35,32 +35,32 @@ public class SurveyController {
         return "redirect:/";
     }
 
-    @GetMapping("/{surveyId}")
-    public String getSurveyVote(@PathVariable Integer surveyId, Model model) {
-        SurveyVoteResponse response = surveyService.getSurveyVote(surveyId);
-        model.addAttribute("survey", response);
-        return "survey/answer"; // 이후 설문 응답 페이지로 수정
-    }
-
     @DeleteMapping("/{surveyId}")
-    public String deleteSurvey(@PathVariable Integer surveyId, HttpSession session) {
+    public String deleteSurvey(@PathVariable("surveyId") Integer surveyId, HttpSession session) {
         SessionUserDto user = (SessionUserDto) session.getAttribute("user");
         surveyService.deleteSurvey(surveyId, user.id());
         return "redirect:/"; // 이후 마이 페이지로 수정
     }
 
-    @GetMapping("/my")
-    public String getMySurveys(HttpSession session, Model model) {
-        SessionUserDto user = (SessionUserDto) session.getAttribute("user");
-        List<SurveySummaryResponse> responses = surveyService.getSurveysByUser(user.id());
-        model.addAttribute("surveys", responses);
-        return "redirect:/"; // 이후 마이 페이지로 수정
+    @GetMapping("/{surveyId}/answer")
+    public String showAnswerPage(@PathVariable("surveyId") Integer surveyId, Model model) {
+        SurveyVoteResponse response = surveyService.getSurveyVote(surveyId);
+        model.addAttribute("survey", response);
+        log.info("response={}", response);
+        return "survey/answer";
     }
 
-    @GetMapping("/answer")
-    public String showAnswerPage(Model model) {
-        // 실제로는 설문 데이터를 서비스에서 불러와야 합니다.
-        return "survey/answer";
+    @PostMapping("/{surveyId}/answer")
+    public String submitSurvey(@PathVariable("surveyId") Integer surveyId,
+                               @ModelAttribute SurveyAnswerRequest request,
+                               HttpSession session) {
+        log.info("Controller : 설문 응답 request={}", request);
+        SessionUserDto user = (SessionUserDto) session.getAttribute("user");
+        log.info("Controller : 유저 정보 user={}", user);
+
+        submissionService.saveSubmission(request, user);
+
+        return "redirect:/surveys/" + surveyId + "/result";
     }
 
     @GetMapping("/{surveyId}/result")

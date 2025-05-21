@@ -1,11 +1,7 @@
 package com.team5.surbee.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -35,7 +31,7 @@ public class Survey {
 
     @Column(nullable = false)
     private boolean isPublic;
-    
+
     @Setter
     @Column(nullable = false)
     private boolean isClosed;
@@ -79,5 +75,11 @@ public class Survey {
         return new Survey(title, description, isPublic, false, password, 0, user, questions, new ArrayList<>());
     }
 
-
+    public void increaseSubmissionCount() {
+        if (this.submissionCount == null) {
+            this.submissionCount = 1;
+        } else {
+            this.submissionCount++;
+        }
+    }
 }

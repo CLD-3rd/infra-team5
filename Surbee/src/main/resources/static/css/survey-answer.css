@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 /* 공통 */
 input, textarea {
     border: 1px solid #DDDDDD;
@@ -40,7 +41,7 @@ input:focus, textarea:focus {
     border-radius: 0 0 10px 10px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .empty-section {
@@ -51,7 +52,7 @@ input:focus, textarea:focus {
 }
 
 .survey-title {
-    width:  100%;
+    width: 100%;
     font-size: 25px;
     padding: 8px;
     margin-bottom: 10px;
@@ -98,7 +99,7 @@ input:focus, textarea:focus {
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .answer-box {
@@ -106,7 +107,7 @@ input:focus, textarea:focus {
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .question-header {
@@ -114,24 +115,7 @@ input:focus, textarea:focus {
     justify-content: space-between;
     align-items: center;
     position: relative;
-}
-
-.answer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-}
-
-.question-text {
-    padding: 8px;
-    width: 100%;
-}
-
-
-.answer-text {
-    padding: 8px;
-    width: 100%;
+    flex-wrap: nowrap;
 }
 
 .question-type {
@@ -139,7 +123,7 @@ input:focus, textarea:focus {
 }
 
 .type-description {
-    text-align: right;
+    white-space: nowrap;
     font-size: 12px;
     color: #666666;
     margin: 5px 0;
@@ -192,6 +176,7 @@ input:focus, textarea:focus {
 .option .radio-label {
     flex: 1;
 }
+
 .option .checkbox-label {
     flex: 1;
 }
@@ -205,7 +190,7 @@ input:focus, textarea:focus {
 
 .delete-btn.hidden,
 .ai-btn.hidden {
-    visibility:  hidden;
+    visibility: hidden;
 }
 
 .text-input-container {
@@ -295,7 +280,7 @@ input:checked + .slider:before {
 }
 
 .add-question-btn,
-.delete-question-btn{
+.delete-question-btn {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -308,7 +293,7 @@ input:checked + .slider:before {
 }
 
 .delete-question-btn.hidden {
-    visibility:  hidden;
+    visibility: hidden;
 }
 
 .save-btn {
@@ -340,6 +325,6 @@ input:checked + .slider:before {
     font-weight: bold;
     cursor: pointer;
 
-    display: block;        /* 버튼을 block 요소로 만들기 */
-    margin: 0 auto;        /* 좌우 마진 자동으로 해서 가운데 정렬 */
+    display: block; /* 버튼을 block 요소로 만들기 */
+    margin: 0 auto; /* 좌우 마진 자동으로 해서 가운데 정렬 */
 }

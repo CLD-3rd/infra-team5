@@ -1,6 +1,5 @@
 package com.team5.surbee.dto.response.survey;
 
-import com.team5.surbee.entity.Option;
 import com.team5.surbee.entity.Question;
 import com.team5.surbee.entity.constant.QuestionType;
 
@@ -11,7 +10,7 @@ public record QuestionResponse(
         String questionText,
         QuestionType questionType,
         boolean isRequired,
-        List<String> options
+        List<OptionResponse> options
 ) {
     public static QuestionResponse from(Question question) {
         return new QuestionResponse(
@@ -20,7 +19,7 @@ public record QuestionResponse(
                 question.getQuestionType(),
                 question.getIsRequired(),
                 question.getOptions().stream()
-                        .map(Option::getOptionText)
+                        .map(OptionResponse::from)
                         .toList()
         );
     }
