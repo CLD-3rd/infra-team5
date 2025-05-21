@@ -5,6 +5,7 @@ import com.team5.surbee.dto.request.SurveyAnswerRequest;
 import com.team5.surbee.dto.request.SurveyCreateRequest;
 import com.team5.surbee.dto.response.survey.SurveyResultResponse;
 import com.team5.surbee.dto.response.survey.SurveyVoteResponse;
+import com.team5.surbee.service.SubmissionService;
 import com.team5.surbee.service.SurveyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class SurveyController {
 
     private final SurveyService surveyService;
+    private final SubmissionService submissionService;
 
     @GetMapping("/create")
     public String showCreateSurveyPage(Model model) {
@@ -40,14 +42,6 @@ public class SurveyController {
         return "redirect:/"; // 이후 마이 페이지로 수정
     }
 
-//    @GetMapping("/my")
-//    public String getMySurveys(HttpSession session, Model model) {
-//        SessionUserDto user = (SessionUserDto) session.getAttribute("user");
-//        List<SurveySummaryResponse> responses = surveyService.getSurveysByUser(user.id());
-//        model.addAttribute("surveys", responses);
-//        return "redirect:/"; // 이후 마이 페이지로 수정
-//    }
-
     @GetMapping("/{surveyId}/answer")
     public String showAnswerPage(@PathVariable("surveyId") Integer surveyId, Model model) {
         SurveyVoteResponse response = surveyService.getSurveyVote(surveyId);
@@ -62,7 +56,11 @@ public class SurveyController {
                                HttpSession session) {
         log.info("Controller : 설문 응답 request={}", request);
         SessionUserDto user = (SessionUserDto) session.getAttribute("user");
-        return "redirect:/survey/" + surveyId + "/answer";
+        log.info("Controller : 유저 정보 user={}", user);
+
+        submissionService.saveSubmission(request, user);
+
+        return "redirect:/surveys/" + surveyId + "/result";
     }
 
     @GetMapping("/{surveyId}/result")

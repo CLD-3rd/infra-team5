@@ -1,8 +1,6 @@
 package com.team5.surbee.service;
 
-import com.team5.surbee.common.exception.ErrorCode;
-import com.team5.surbee.common.exception.SurveyException;
-import com.team5.surbee.common.exception.UserExcpetion;
+import com.team5.surbee.common.exception.*;
 import com.team5.surbee.dto.SurveyDto;
 import com.team5.surbee.dto.response.survey.*;
 import com.team5.surbee.entity.Option;
@@ -10,9 +8,7 @@ import com.team5.surbee.entity.Question;
 import com.team5.surbee.entity.Survey;
 import com.team5.surbee.entity.User;
 import com.team5.surbee.entity.constant.QuestionType;
-import com.team5.surbee.repository.AnswerRepository;
-import com.team5.surbee.repository.SurveyRepository;
-import com.team5.surbee.repository.UserRepository;
+import com.team5.surbee.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +19,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.team5.surbee.common.exception.ErrorCode.SURVEY_NOT_FOUND;
+import static com.team5.surbee.common.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -33,6 +29,8 @@ public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final UserRepository userRepository;
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
+    private final OptionRepository optionRepository;
 
     @Transactional(readOnly = true)
     public SurveyMainResponse getMainSurveyList() {
@@ -110,7 +108,7 @@ public class SurveyService {
                 .map(SurveySummaryResponse::from)
                 .toList();
     }
-    
+
     @Transactional
     public void closeSurvey(Integer surveyId, Integer userId) {
         Survey survey = getSurveyOrThrow(surveyId);
@@ -124,7 +122,7 @@ public class SurveyService {
         }
 
         survey.setClosed(true);
-        surveyRepository.save(survey); 
+        surveyRepository.save(survey);
     }
 
 
@@ -194,8 +192,18 @@ public class SurveyService {
                 .orElseThrow(() -> new UserExcpetion(ErrorCode.USER_NOT_FOUND));
     }
 
-    private Survey getSurveyOrThrow(Integer surveyId) {
+    protected Survey getSurveyOrThrow(Integer surveyId) {
         return surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new SurveyException(SURVEY_NOT_FOUND));
+    }
+
+    protected Question getQuestionOrThrow(Integer questionId) {
+        return questionRepository.findById(questionId)
+                .orElseThrow(() -> new QuestionException(QUESTION_NOT_FOUND));
+    }
+
+    protected Option getOptionOrThrow(Integer optionId) {
+        return optionRepository.findById(optionId)
+                .orElseThrow(() -> new OptionException(OPTION_NOT_FOUND));
     }
 }
