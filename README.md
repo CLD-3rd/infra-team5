@@ -60,11 +60,11 @@
 
 ### JVM 대시보드
 
-![JVM 대시보드](./images/grafana-jvm.png)
+![JVM 대시보드](./images/JVM-dashboard.png)
 
 ### MySQL 대시보드
 
-![MySQL 대시보드](./images/grafana-mysql.png)
+![MySQL 대시보드](./images/MySQL-dashboard.png)
 
 ### 🔔 설정된 알람 조건
 
