@@ -34,11 +34,11 @@ public class SurveyService {
 
     @Transactional(readOnly = true)
     public SurveyMainResponse getMainSurveyList() {
-        List<Survey> active = surveyRepository.findTop10ByIsClosedFalseOrderByCreatedAtDesc();
+        List<Survey> active = surveyRepository.findTop10ByIsClosedFalseAndIsPublicTrueOrderByCreatedAtDesc();
 
-        List<Survey> closed = surveyRepository.findTop10ByIsClosedTrueOrderByCreatedAtDesc();
+        List<Survey> closed = surveyRepository.findTop10ByIsClosedTrueAndIsPublicTrueOrderByCreatedAtDesc();
 
-        List<Survey> popular = surveyRepository.findTop10ByOrderBySubmissionCountDesc();
+        List<Survey> popular = surveyRepository.findTop10ByIsPublicTrueOrderBySubmissionCountDesc();
 
         return SurveyMainResponse.builder()
                 .activeSurveys(active.stream()
