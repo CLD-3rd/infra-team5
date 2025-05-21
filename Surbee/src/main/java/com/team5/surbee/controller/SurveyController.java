@@ -65,7 +65,6 @@ public class SurveyController {
         return "redirect:/survey/" + surveyId + "/answer";
     }
 
-
     @GetMapping("/{surveyId}/result")
     public String getSurveyResult(@PathVariable("surveyId") Integer surveyId, Model model) {
         log.info("Controller : 응답 결과 출력 (id = {})", surveyId);
