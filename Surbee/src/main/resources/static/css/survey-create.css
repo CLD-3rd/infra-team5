@@ -298,3 +298,15 @@ input:checked + .slider:before {
     font-weight: bold;
     cursor: pointer;
 }
+
+.submit-btn {
+    background-color: #FFD700;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+    margin: 0 auto;
+}

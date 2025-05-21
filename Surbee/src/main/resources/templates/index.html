@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html layout:decorate="layout/layout"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layout/layout">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <link rel="stylesheet" th:href="@{/css/index.css}"/>
 </head>
 <body>
-<section layout:fragment="content" class="main-content">
+<section class="main-content" layout:fragment="content">
     <div class="site-description">
         <h2>설문으로 세상과 소통하세요! ✨</h2>
         <p>누구나 쉽게 설문을 만들고, 참여하고, 결과를 확인할 수 있습니다.</p>
@@ -28,8 +28,11 @@
                 <h3>진행중인 설문 (최신순)</h3>
                 <ul class="survey-list">
                     <li th:each="survey : ${surveys.activeSurveys}">
-                        <a th:if="${!survey.closed}" th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                        <a th:if="${survey.closed}" th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:href="@{'/survey/' + ${survey.id} + '/answer'}" th:if="${!survey.closed}"
+                           th:text="${survey.title}">설문
+                            제목</a>
+                        <a th:href="@{'/result/' + ${survey.id}}" th:if="${survey.closed}" th:text="${survey.title}">설문
+                            제목</a>
                         <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
                     </li>
                 </ul>
@@ -39,8 +42,12 @@
                 <h3>인기 설문 (답변 많은 순)</h3>
                 <ul class="survey-list">
                     <li th:each="survey : ${surveys.popularSurveys}">
-                        <a th:if="${!survey.closed}" th:href="@{'/survey/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
-                        <a th:if="${survey.closed}" th:href="@{'/result/' + ${survey.id}}" th:text="${survey.title}">설문 제목</a>
+                        <a th:href="@{'/surveys/' + ${survey.id} + '/answer'}" th:if="${!survey.closed}"
+                           th:text="${survey.title}">설문
+                            제목</a>
+                        <a th:href="@{'/surveys/' + ${survey.id} + '/answer'}" th:if="${survey.closed}"
+                           th:text="${survey.title}">설문
+                            제목</a>
                         <span th:text="'응답수: ' + ${survey.submissionCount}"></span>
                     </li>
                 </ul>
