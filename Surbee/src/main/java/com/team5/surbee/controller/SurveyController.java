@@ -39,7 +39,7 @@ public class SurveyController {
     public String getSurveyVote(@PathVariable Integer surveyId, Model model) {
         SurveyVoteResponse response = surveyService.getSurveyVote(surveyId);
         model.addAttribute("survey", response);
-        return "survey/create"; // 이후 설문 응답 페이지로 수정
+        return "survey/answer"; // 이후 설문 응답 페이지로 수정
     }
 
     @DeleteMapping("/{surveyId}")
