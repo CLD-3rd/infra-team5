@@ -17,10 +17,16 @@
         <form class="survey-form"
               th:action="@{/surveys/{id}/answer(id=${survey.id})}"
               th:method="post">
-
             <!-- surveyId를 hidden 필드로 전달 -->
             <input name="surveyId" th:value="${survey.id}" type="hidden"/>
-
+            <!-- 설문지 제목/설명 -->
+            <div class="empty-section"></div>
+            <div class="survey-header">
+                <div class="title-section">
+                    <h1 th:text="${survey.title}">설문지 제목</h1>
+                    <p th:text="${survey.description}">설문지 설명</p>
+                </div>
+            </div>
             <!-- 질문 반복 -->
             <div class="questions-container"
                  th:each="question, iterStat : ${survey.questions}">
