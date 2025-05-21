@@ -1,3 +1,7 @@
+.text-input-container {
+    margin-bottom: 15px;
+}
+
 .required-label {
     color: red;
     font-size: 0.9em;

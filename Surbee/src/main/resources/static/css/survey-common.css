@@ -1,0 +1,299 @@
+* {
+    box-sizing: border-box;
+}
+
+/* =======================
+   Input Elements
+========================== */
+input,
+textarea {
+    border: 1px solid #DDD;
+    border-radius: 4px;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #FFCC00;
+    outline: none;
+    transition: 0.2s ease-in;
+}
+
+.radio-label,
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.radio-label input[type="radio"] {
+    vertical-align: middle;
+    transform: translateY(-2px);
+}
+
+/* =======================
+   Survey Container
+========================== */
+.survey-container {
+    padding: 20px;
+    min-height: 100vh;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.survey-header {
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.empty-section {
+    width: 100%;
+    height: 15px;
+    background: #FFCC00;
+    border-radius: 10px 10px 0 0;
+}
+
+.survey-title {
+    width: 100%;
+    font-size: 25px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.survey-description {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    resize: none;
+}
+
+/* =======================
+   Privacy Section
+========================== */
+.privacy-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.privacy-options {
+    display: flex;
+    gap: 10px;
+}
+
+.password-input {
+    display: flex;
+    align-items: center;
+}
+
+.password-input label {
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.password-input input {
+    width: 100px;
+    border: 1px solid #DDD;
+}
+
+/* =======================
+   Question Box
+========================== */
+.question-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.question-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.question-text {
+    width: 100%;
+    padding: 8px;
+}
+
+.type-description {
+    text-align: right;
+    font-size: 12px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.options-container {
+    margin-bottom: 15px;
+}
+
+.option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option .radio-label,
+.option .checkbox-label {
+    flex: 1;
+}
+
+/* =======================
+   Inputs for Answers
+========================== */
+.text-input {
+    width: 100%;
+    font-size: 15px;
+    padding: 5px 0;
+    border: none;
+    border-bottom: 1px solid #CCC;
+    border-radius: 0;
+}
+
+.text-input:focus {
+    border-bottom: 1px solid #FFD700;
+}
+
+.form-select {
+    width: 90px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #CCC;
+    background: #FFF url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='black'%20d='M2%200L0%202h4L2%200zm0%205L0%203h4L2%205z'/%3E%3C/svg%3E") no-repeat right 10px center;
+    background-size: 12px;
+    appearance: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* =======================
+   Buttons & Actions
+========================== */
+.add-question-btn,
+.delete-question-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #FFF;
+    border: 1px solid #DDD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.delete-btn,
+.save-btn,
+.submit-btn,
+.ai-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.save-btn,
+.submit-btn {
+    background: #FFD700;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.submit-btn {
+    margin: 0 auto;
+}
+
+.ai-btn {
+    background: #FFD700;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.delete-btn {
+    color: #999;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* =======================
+   Required Toggle
+========================== */
+.required-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.required-toggle span {
+    margin-left: 10px;
+}
+
+/* =======================
+   Switch (Toggle) Style
+========================== */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #CCC;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background: #FFF;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background: #FFD700;
+}
+
+input:checked + .slider:before {
+    transform: translateX(17px);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}

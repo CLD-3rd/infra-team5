@@ -69,6 +69,6 @@ public class SurveyController {
         SurveyResultResponse response = surveyService.getSurveyResult(surveyId);
         model.addAttribute("survey", response);
         log.info("Controller : response = {})", response);
-        return "result/stats";
+        return "survey/result";
     }
 }
